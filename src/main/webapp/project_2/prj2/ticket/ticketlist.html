@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>내 티켓 - V!VAPark</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root { --primary:#ff6b6b; --accent:#ffe66d; --bg:#fff8e7; --card-radius:18px; }
+    body{background:var(--bg);font-family:"Noto Sans KR",sans-serif;padding:60px 0;}
+    .page-title{text-align:center;margin-bottom:20px;}
+    .ticket-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:1100px;margin:0 auto;padding:0 16px;}
+    .ticket-card{background:white;border-radius:var(--card-radius);box-shadow:0 5px 15px rgba(0,0,0,0.08);overflow:hidden;transition:.2s;}
+    .ticket-card:hover{transform:translateY(-4px);}
+    .ticket-card img{width:100%;height:160px;object-fit:cover;}
+    .ticket-body{padding:14px;}
+    .ticket-body h5{font-weight:700;margin:0 0 8px;}
+    .ticket-body p{margin:0 0 8px;font-size:0.95rem;}
+    .btn-detail{background:var(--accent);border:none;font-weight:700;width:100%;border-radius:10px;padding:10px;}
+  </style>
+</head>
+<body>
+  <h2 class="page-title">🎟️ 내 티켓 목록</h2>
+  <section class="ticket-list">
+    <article class="ticket-card" data-id="A1234567" data-title="V!VAPark 1일 자유이용권" data-date="2025-11-15" data-people="성인 2, 청소년 1" data-price="₩120,000">
+      <img src="https://images.unsplash.com/photo-1563906267088-b029e7101113?q=80&w=1200&auto=format&fit=crop" alt="">
+      <div class="ticket-body">
+        <h5>V!VAPark 1일 자유이용권</h5>
+        <p>📅 이용일: 2025.11.15<br>👥 인원: 성인 2, 청소년 1<br>💳 ₩120,000</p>
+        <button class="btn-detail" data-action="detail">상세보기</button>
+      </div>
+    </article>
+
+    <article class="ticket-card" data-id="B9876543" data-title="V!VAPark 야간 이용권" data-date="2025-11-20" data-people="성인 1" data-price="₩45,000">
+      <img src="https://images.unsplash.com/photo-1542317854-f9596ae57032?q=80&w=1200&auto=format&fit=crop" alt="">
+      <div class="ticket-body">
+        <h5>V!VAPark 야간 이용권</h5>
+        <p>📅 이용일: 2025.11.20<br>👥 인원: 성인 1<br>💳 ₩45,000</p>
+        <button class="btn-detail" data-action="detail">상세보기</button>
+      </div>
+    </article>
+  </section>
+
+  <script>
+    document.querySelectorAll('.btn-detail').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        const card = e.target.closest('.ticket-card');
+        const id = card.dataset.id;
+        // 티켓 ID를 URL에 붙여서 상세 페이지로 이동
+        location.href = `ticketDetail.html?id=${id}`;
+      });
+    });
+  </script>
+</body>
+</html>

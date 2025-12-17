@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내 티켓 | V!VAPark</title>
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #fff8e7;
+      font-family: 'Pretendard', sans-serif;
+    }
+    .navbar {
+      background-color: #ff6b6b;
+    }
+    .navbar-brand {
+      color: white;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .nav-link {
+      color: white !important;
+      margin-right: 15px;
+    }
+    .ticket-card {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s ease-in-out;
+    }
+    .ticket-card:hover {
+      transform: scale(1.03);
+    }
+    .ticket-img {
+      height: 180px;
+      object-fit: cover;
+    }
+    .card-body {
+      background-color: white;
+    }
+    .btn-detail {
+      background-color: #ffe66d;
+      border: none;
+      font-weight: bold;
+      border-radius: 10px;
+      transition: background-color 0.2s;
+    }
+    .btn-detail:hover {
+      background-color: #ffd43b;
+    }
+    .ticket-header {
+      text-align: center;
+      margin: 30px 0;
+    }
+    .ticket-header h2 {
+      font-weight: bold;
+      color: #ff6b6b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 헤더 -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#">🎡 V!VAPark</a>
+      <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="#">홈</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">티켓 예매</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#">내 티켓</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">이벤트</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">로그아웃</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 메인 -->
+  <div class="container">
+    <div class="ticket-header">
+      <h2>내 티켓</h2>
+      <p class="text-muted">예매한 티켓을 확인하고 QR코드로 입장하세요 🎟️</p>
+    </div>
+
+    <div class="row g-4">
+      <!-- 티켓 카드 1 -->
+      <div class="col-md-4">
+        <div class="card ticket-card">
+          <img src="https://images.unsplash.com/photo-1563906267088-b029e7101113" class="ticket-img" alt="티켓 이미지">
+          <div class="card-body">
+            <h5 class="card-title">V!VAPark 1일 자유이용권</h5>
+            <p class="card-text">📅 이용일: 2025.11.15<br>👥 인원: 성인 2, 청소년 1<br>💳 결제금액: ₩120,000</p>
+            <button class="btn btn-detail w-100">상세보기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 티켓 카드 2 -->
+      <div class="col-md-4">
+        <div class="card ticket-card">
+          <img src="https://images.unsplash.com/photo-1542317854-f9596ae57032" class="ticket-img" alt="티켓 이미지">
+          <div class="card-body">
+            <h5 class="card-title">V!VAPark 야간 이용권</h5>
+            <p class="card-text">📅 이용일: 2025.11.20<br>👥 인원: 성인 1<br>💳 결제금액: ₩45,000</p>
+            <button class="btn btn-detail w-100">상세보기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 티켓 카드 3 -->
+      <div class="col-md-4">
+        <div class="card ticket-card">
+          <img src="https://images.unsplash.com/photo-1533106418989-88406c7cc8bb" class="ticket-img" alt="티켓 이미지">
+          <div class="card-body">
+            <h5 class="card-title">V!VAPark 패밀리 패스</h5>
+            <p class="card-text">📅 이용일: 2025.12.02<br>👥 인원: 가족 4인<br>💳 결제금액: ₩160,000</p>
+            <button class="btn btn-detail w-100">상세보기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

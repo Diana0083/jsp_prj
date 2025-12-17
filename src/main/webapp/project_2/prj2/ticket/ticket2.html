@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>내 티켓 - V!VAPark</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#ff6b6b;
+      --accent:#ffe66d;
+      --bg:#fff8e7;
+      --card-radius:18px;
+    }
+
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family:Inter, "Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:#222;
+      padding-top:76px; /* header height offset */
+    }
+
+    /* Header */
+    .site-header{
+      position:fixed;
+      top:0; left:0; right:0;
+      height:76px;
+      background:var(--primary);
+      display:flex;
+      align-items:center;
+      z-index:1030;
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    }
+    .site-header .container { display:flex; align-items:center; gap:12px; }
+    .logo { color:white; font-weight:700; font-size:1.25rem; display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .nav-links { margin-left:24px; display:flex; gap:14px; align-items:center; }
+    .nav-links a { color:rgba(255,255,255,0.95); text-decoration:none; font-weight:600;}
+    .nav-links a.active { text-decoration:underline; text-underline-offset:6px; }
+    .user-area { margin-left:auto; display:flex; gap:8px; align-items:center; }
+    .profile-thumb{ width:36px; height:36px; border-radius:50%; background:#fff7ea; display:inline-flex; align-items:center; justify-content:center; font-weight:700; color:var(--primary); }
+
+    /* Page title */
+    .page-title{ text-align:center; margin:28px 0 12px; }
+    .page-title h1{ color:var(--primary); font-weight:800; margin-bottom:6px; }
+    .page-title p{ color:#555; margin:0; }
+
+    /* Ticket grid */
+    .ticket-list {
+      max-width:1200px;
+      margin: 24px auto 80px;
+      padding:0 16px;
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap:20px;
+    }
+
+    .ticket-card{
+      border-radius:var(--card-radius);
+      overflow:hidden;
+      background:white;
+      box-shadow:0 8px 20px rgba(0,0,0,0.06);
+      display:flex;
+      flex-direction:column;
+      transition:transform .18s ease, box-shadow .18s;
+    }
+    .ticket-card:hover{ transform:translateY(-6px); box-shadow:0 14px 30px rgba(0,0,0,0.09); }
+
+    .ticket-thumb{
+      height:160px;
+      width:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .ticket-body{
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      flex:1;
+    }
+    .ticket-title{ font-weight:700; color:#333; margin:0; }
+    .ticket-meta{ color:#555; font-size:0.95rem; margin:0; line-height:1.4; white-space:pre-line; }
+    .ticket-actions{ margin-top:auto; display:flex; gap:8px; }
+    .btn-detail{
+      background:var(--accent);
+      border:none;
+      color:#111;
+      font-weight:700;
+      border-radius:10px;
+      padding:10px 12px;
+      width:100%;
+    }
+    .btn-cancel{
+      background:transparent;
+      border:1px solid #efefef;
+      color:#666;
+      border-radius:10px;
+      padding:8px 12px;
+      width:100%;
+    }
+
+    /* Modal QR box */
+    .qr-box{
+      width:200px;
+      height:200px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:8px;
+      background:linear-gradient(180deg,#fff,#fff9e6);
+      border:1px dashed rgba(0,0,0,0.06);
+      margin:12px 0;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width:576px){
+      .nav-links { display:none; } /* hide nav items on small screens */
+      .site-header .container { justify-content:space-between; }
+      .page-title h1{ font-size:1.25rem; }
+      body{ padding-top:70px; }
+      .ticket-thumb{ height:200px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="#">
+        <span style="font-size:1.35rem">🎡</span> <span>V!VAPark</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#">홈</a>
+        <a href="#">티켓 예매</a>
+        <a href="#" class="active">내 티켓</a>
+        <a href="#">이벤트</a>
+        <a href="#">고객센터</a>
+      </nav>
+
+      <div class="user-area">
+        <div class="profile-thumb">NY</div>
+        <button class="btn btn-sm" style="background:#fff;color:var(--primary);font-weight:700;border-radius:8px;">로그아웃</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Title -->
+  <section class="page-title">
+    <h1>내 티켓 확인하기</h1>
+    <p>예매한 티켓의 상세 정보를 확인하고 QR로 입장하세요 🎟️</p>
+  </section>
+
+  <!-- Ticket list (cards) -->
+  <section class="ticket-list" id="ticketList">
+    <!-- Ticket card (sample items) -->
+    <article class="ticket-card" data-id="A1234567"
+             data-title="V!VAPark 1일 자유이용권"
+             data-date="2025-11-15"
+             data-people="성인 2, 청소년 1"
+             data-gate="중앙입구"
+             data-payment="신용카드 (****-****-1234)"
+             data-booked="2025-11-10 14:22"
+             >
+      <img class="ticket-thumb" src="https://images.unsplash.com/photo-1563906267088-b029e7101113?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=0e5a3aa1203a4e5b7f6d4a3d12b3f9f3" alt="티켓 이미지">
+      <div class="ticket-body">
+        <h3 class="ticket-title">V!VAPark 1일 자유이용권</h3>
+        <p class="ticket-meta">📅 이용일: <strong>2025.11.15</strong>
+👥 인원: <strong>성인 2, 청소년 1</strong>
+💳 결제금액: <strong>₩120,000</strong></p>
+
+        <div class="ticket-actions">
+          <button class="btn-detail" data-action="detail">상세보기</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="ticket-card" data-id="B9876543"
+             data-title="V!VAPark 야간 이용권"
+             data-date="2025-11-20"
+             data-people="성인 1"
+             data-gate="동문"
+             data-payment="카카오페이"
+             data-booked="2025-11-11 09:55">
+      <img class="ticket-thumb" src="https://images.unsplash.com/photo-1542317854-f9596ae57032?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=3b95a23d89e7f5f4d9a2a0a283e3cabc" alt="티켓 이미지">
+      <div class="ticket-body">
+        <h3 class="ticket-title">V!VAPark 야간 이용권</h3>
+        <p class="ticket-meta">📅 이용일: <strong>2025.11.20</strong>
+👥 인원: <strong>성인 1</strong>
+💳 결제금액: <strong>₩45,000</strong></p>
+        <div class="ticket-actions">
+          <button class="btn-detail" data-action="detail">상세보기</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="ticket-card" data-id="C2468101"
+             data-title="V!VAPark 패밀리 패스"
+             data-date="2025-12-02"
+             data-people="가족 4인"
+             data-gate="서문"
+             data-payment="신용카드 (****-****-5678)"
+             data-booked="2025-11-05 18:12">
+      <img class="ticket-thumb" src="https://images.unsplash.com/photo-1533106418989-88406c7cc8bb?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9b8f2c37b4b7d8a8b3a6f7f6ab2c0d3a" alt="티켓 이미지">
+      <div class="ticket-body">
+        <h3 class="ticket-title">V!VAPark 패밀리 패스</h3>
+        <p class="ticket-meta">📅 이용일: <strong>2025.12.02</strong>
+👥 인원: <strong>가족 4인</strong>
+💳 결제금액: <strong>₩160,000</strong></p>
+        <div class="ticket-actions">
+          <button class="btn-detail" data-action="detail">상세보기</button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Modal (bootstrap) -->
+  <div class="modal fade" id="ticketModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius:14px; overflow:hidden;">
+        <div class="modal-header" style="background:linear-gradient(90deg,var(--accent),#fff);">
+          <h5 class="modal-title">예매 상세</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+        </div>
+        <div class="modal-body">
+          <div id="modalContent">
+            <p><strong>🎟️ 예매번호:</strong> <span id="m-id"></span></p>
+            <p><strong>🎠 티켓명:</strong> <span id="m-title"></span></p>
+            <p><strong>📅 이용일:</strong> <span id="m-date"></span></p>
+            <p><strong>👥 인원:</strong> <span id="m-people"></span></p>
+            <p><strong>🏞️ 입장게이트:</strong> <span id="m-gate"></span></p>
+            <p><strong>💳 결제수단:</strong> <span id="m-payment"></span></p>
+            <p><strong>⏰ 예매일시:</strong> <span id="m-booked"></span></p>
+
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+              <div class="qr-box" id="m-qr" aria-hidden="true">
+                <!-- QR placeholder (svg) injected by JS -->
+              </div>
+
+              <div style="flex:1; min-width:160px;">
+                <small class="text-muted">QR 코드를 입장 시 제시하세요.</small>
+                <div style="margin-top:8px;">
+                  <button id="btnCancel" class="btn btn-outline-danger btn-sm">티켓 취소하기</button>
+                  <button id="btnPrint" class="btn btn-sm" style="background:var(--primary); color:white; margin-left:8px;">PDF 저장 / 인쇄</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Helper: generate a simple QR-like SVG with ticket id text.
+    function generateSimpleQR(id){
+      // This is a decorative placeholder, not a real scannable QR.
+      const size = 200;
+      const rectSize = 10;
+      let svg = '<svg xmlns="http://www.w3.org/2000/svg" width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'">';
+      svg += '<rect width="'+size+'" height="'+size+'" fill="#ffffff"/>';
+      // draw some blocks pattern based on hash
+      let hash = 0;
+      for(let i=0;i<id.length;i++) hash = (hash<<5) - hash + id.charCodeAt(i);
+      for(let y=0;y<16;y++){
+        for(let x=0;x<16;x++){
+          const v = ((hash>>((x+y)%32)) & 1) ? '#111' : '#eee';
+          svg += '<rect x="'+(x*12.5)+'" y="'+(y*12.5)+'" width="12.5" height="12.5" fill="'+v+'"/>';
+        }
+      }
+      svg += '<rect x="8" y="8" width="44" height="44" fill="#111"/>';
+      svg += '<text x="'+(size/2)+'" y="'+(size - 12)+'" text-anchor="middle" font-size="12" fill="#333">'+id+'</text>';
+      svg += '</svg>';
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
+    // Modal logic
+    (function(){
+      const ticketList = document.getElementById('ticketList');
+      const modalEl = document.getElementById('ticketModal');
+      const bsModal = new bootstrap.Modal(modalEl);
+
+      // modal fields
+      const fld = {
+        id: document.getElementById('m-id'),
+        title: document.getElementById('m-title'),
+        date: document.getElementById('m-date'),
+        people: document.getElementById('m-people'),
+        gate: document.getElementById('m-gate'),
+        payment: document.get
