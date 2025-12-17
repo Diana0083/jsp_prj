@@ -1,5 +1,5 @@
 <%@page import="day1128.ParamDTO"%>
-<%@page import="kr.co.sist.user.member.WebMemberSerivce"%>
+<%@page import="kr.co.sist.user.member.WebMemberService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
@@ -85,18 +85,19 @@ $(function(){
 			<div class="row featurette">
 				<div class="col-md-7">
 				<%
-				String id=(String)session.getAttribute("userId");
-				
-				WebMemberSerivce wms=WebMemberSerivce.getInstance();
-				ParamDTO pDTO= wms.searchMember(id);
-				
-				String selectMail=pDTO.getEmail();
-				String email=selectMail.substring(0,selectMail.indexOf("@"));
-				String domain=selectMail.substring(selectMail.indexOf("@")+1);
-				
-				pageContext.setAttribute("pDTO",pDTO);
-				pageContext.setAttribute("email",email);
-				pageContext.setAttribute("domain",domain);
+
+						String id=(String)session.getAttribute("userId");
+						
+						WebMemberService wms=WebMemberService.getInstance();
+						ParamDTO pDTO= wms.searchMember(id);
+						
+						String selectMail=pDTO.getEmail();
+						String email=selectMail.substring(0,selectMail.indexOf("@"));
+						String domain=selectMail.substring(selectMail.indexOf("@")+1);
+						
+						pageContext.setAttribute("pDTO",pDTO);
+						pageContext.setAttribute("email",email);
+						pageContext.setAttribute("domain",domain);
 				%>
 				<h2>회원정보 수정</h2>
 				<form name="modifyFrm" method="post" id="modifyFrm" 
