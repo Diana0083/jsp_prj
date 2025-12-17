@@ -34,11 +34,12 @@
 		<jsp:include page="../common/include/hamberger.jsp"></jsp:include>
 
 		<!-- 메인 공간(비어있는 흰 배경 영역) -->
-		<div class="container"></div>
+		<div class="container">
 		
 		<!-- 로그인 페이지 -->
 		<jsp:include page="../login/login_css.jsp"></jsp:include>
 		
+		</div>
 		<!-- container 끝 -->
 
 		<div id="footer">

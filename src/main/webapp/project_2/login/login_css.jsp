@@ -5,20 +5,55 @@
 <style type="text/css">
 
 /* 배경 영역 */
-#loginBgWrap {
+/* #loginBgWrap {
     position: relative;
     height: calc(100vh - 120px);
     overflow: hidden;
+} */
+#loginBgWrap {
+    position: relative;
+    height: 100vh; 
+    overflow: hidden;
 }
 
-.bg-img {
+
+/* .bg-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
+} */
+.bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+	bottom: 0;
+	
+    width: 100%;
+    height: 100%;
 
+    object-fit: cover;   /* ← 핵심 */
+    object-position: center;
+
+    z-index: 1;
+}
 /* 로그인 카드 */
 .loginFrm {
+
+    width: 380px;
+    background: #fff;
+    padding: 45px 40px;
+    border-radius: 22px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+    
+    position: absolute;
+    top: 50%;
+    right: 8%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+
+/* .loginFrm {
     width: 380px;
     background: #fff;
     padding: 45px 40px;
@@ -29,7 +64,7 @@
     top: 50%;
     right: 8%;
     transform: translateY(-50%);
-}
+} */
 
 /* 제목 */
 .page_tit h2 {
@@ -97,13 +132,18 @@
     background: #ff2f52;
 }
 
+.container {
+	min-height: 0px;
+	} 
+
+
 </style>
 <!-- 로그인폼 디자인 끝 -->
 
 
 		<!-- 로그인 창 -->
 	    <div id="loginBgWrap">
-	       <img src="../common/images/loginPg.png" class="bg-img" alt="로그인 배경">
+	       <img src="../common/Images/loginPg.png" class="bg-img" alt="로그인 배경">
 	   
 	       <div class="loginFrm">
 	           <div class="page_tit">

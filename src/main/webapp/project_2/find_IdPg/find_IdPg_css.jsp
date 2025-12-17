@@ -226,7 +226,6 @@
 
 <!-- 아이디 찾기 영역 -->
 <div id="findWrap">
-	<form name="findFrm" id="findFrm">
 	<!-- 설명 -->
 	<div class="findDesc">
 		등록된 회원정보로<br>
@@ -272,11 +271,9 @@
 			<button type="submit" class="btnFind">아이디 찾기</button>
 			<button type="button" class="btnCancel" onclick="history.back()">취소</button>
 		</div>
-
+</div>
+</div>
 	</form>
 
-</div>
 
-		</div>
 
-</form>

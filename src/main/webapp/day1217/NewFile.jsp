@@ -12,7 +12,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 
-<title> 맵 연습 </title>
+<title> JSP 템플릿 </title>
 <link rel ="shortcut icon" href="http://192.168.10.78/jsp_prj/common/images/favicon.ico"/>
 
 

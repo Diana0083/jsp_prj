@@ -35,8 +35,8 @@
 
 		<!-- 메인 공간(비어있는 흰 배경 영역) -->
 		<div class="container">
-<%-- 		<jsp:include page="../join/join_css.jsp"></jsp:include> --%>
-		<jsp:include page="../join/join_Welcome_css.jsp"></jsp:include>
+	<jsp:include page="../join/join_Welcome_css.jsp"></jsp:include> 
+		<%-- <jsp:include page="../join/join_Welcome_css.jsp"></jsp:include> --%>
 		</div>
 		<!-- container 끝 -->
 
