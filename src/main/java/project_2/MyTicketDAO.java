@@ -31,7 +31,7 @@ public class MyTicketDAO {
 	}//getInstance
 	
 	public List<MyTicketDTO> selectTicket(int memberNum) throws SQLException {
-	    List<MyTicketDTO> mtList = new ArrayList<MyTicketDTO>();
+	    List<MyTicketDTO> list = new ArrayList<MyTicketDTO>();
 
 	    DbConn dbCon = DbConn.getInstance("jdbc/dbcp");
 
@@ -40,25 +40,21 @@ public class MyTicketDAO {
 	    ResultSet rs = null;
 
 	    try {
-			//1. JNDI 사용객체 생성
-			//2. DataSource 얻기
-			//3. Connection 얻기
-				con=dbCon.getConn();
-			//4. 쿼리문 생성 객체 얻기
-				StringBuilder selectTicket=new StringBuilder();
-	    	//MyTicketDAO 쿼리문 --
-				selectTicket
-				.append("	select	 t.ticket_num, tt.ticket_name, n.use_date, "
-						+ "p.personal_cnt, pi.pay_method, t.t_res_date,t.ticket_qr	")
-				.append("	from ticket_reserve t									")
-				.append("	join ticket tt on t.ticket_num = tt.ticket_num			")
-				.append("	left join normal_ticket n on t.t_res_num = n.t_res_num	")
-				.append("	left join personal p on t.t_res_num = p.t_res_num		")
-				.append("	left join pay pay on t.t_res_num = pay.t_res_num		")
-				.append("	left join pay_info pi on pay.pay_num = pi.pay_num		")
-				.append("	where t.member_num = ?									")
-				.append("	order by t.t_res_date desc;								");
-	    	   
+	        con = dbCon.getConn();
+
+	        StringBuilder selectTicket = new StringBuilder();
+	        selectTicket
+	            .append("	select t.ticket_num, tt.ticket_name, n.use_date, ")
+	            .append("	       p.personal_cnt, pi.pay_method, t.t_res_date, t.ticket_qr ")
+	            .append("	from ticket_reserve t ")
+	            .append("	join ticket tt on t.ticket_num = tt.ticket_num ")
+	            .append("	left join normal_ticket n on t.t_res_num = n.t_res_num ")
+	            .append("	left join personal p on t.t_res_num = p.t_res_num ")
+	            .append("	left join pay pay on t.t_res_num = pay.t_res_num ")
+	            .append("	left join pay_info pi on pay.pay_num = pi.pay_num ")
+	            .append("	where t.member_num = ? ")
+	            .append("	order by t.t_res_date desc ");
+
 	        pstmt = con.prepareStatement(selectTicket.toString());
 	        pstmt.setInt(1, memberNum);
 
@@ -68,20 +64,22 @@ public class MyTicketDAO {
 	            MyTicketDTO dto = new MyTicketDTO(
 	                rs.getInt("ticket_num"),
 	                rs.getString("ticket_name"),
-	                rs.getString("person_cnt"),
+	                rs.getString("personal_cnt"),
 	                rs.getString("pay_method"),
-	                rs.getString("qr_code"),
+	                rs.getString("ticket_qr"),
 	                rs.getDate("use_date"),
 	                rs.getDate("t_res_date")
 	            );
-	            mtList.add(dto);
+
+	            list.add(dto); // ✅ 리스트에 추가
 	        }
 	    } finally {
 	        dbCon.dbClose(rs, pstmt, con);
 	    }
 
-	    return mtList;
+	    return list;
 	}
+
 
 
 	
@@ -102,9 +100,9 @@ public class MyTicketDAO {
 			StringBuilder updateCnt=new StringBuilder();
 			
 			updateCnt
-			.append("	update board	")
-			.append("	set cnt=cnt+1	")
-			.append("	where num = ?	");
+			.append("	update ticket_reserve	")
+			.append("	set use_yn = 'Y'	")
+			.append("	where t_res_num = ?	");
 			
 			pstmt = con.prepareStatement(updateCnt.toString());
 			
@@ -120,4 +118,35 @@ public class MyTicketDAO {
 		}//end finally
 		
 	}//updateBoardCnt
+
+	public int refundTicket(int tResNum) throws SQLException {
+
+	    int cnt = 0;
+
+	    DbConn dbCon = DbConn.getInstance("jdbc/dbcp");
+
+	    Connection con = null;
+	    PreparedStatement pstmt = null;
+
+	    try {
+	        con = dbCon.getConn();
+
+	        StringBuilder sql = new StringBuilder();
+	        sql.append(" update ticket_reserve ")
+	           .append(" set refund_yn = 'Y' ")
+	           .append(" where t_res_num = ? ");
+
+	        pstmt = con.prepareStatement(sql.toString());
+	        pstmt.setInt(1, tResNum);
+
+	        cnt = pstmt.executeUpdate();
+
+	    } finally {
+	        dbCon.dbClose(null, pstmt, con);
+	    }
+
+	    return cnt;
+	}//refundTicket
+
+	
 }//class

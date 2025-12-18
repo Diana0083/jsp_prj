@@ -46,7 +46,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	z-index: 10;
+	z-index: 9999;
 }
 
 /* 왼쪽 운영시간 */

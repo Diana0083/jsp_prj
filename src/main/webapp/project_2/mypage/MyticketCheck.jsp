@@ -1,5 +1,10 @@
+<%@page import="project_2.MyTicketDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="project_2.MyTicketService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -345,6 +350,43 @@ visibility: visible;
 		$(".ticketChDiv").removeClass("open");
 	}
 </script>
+
+
+<script>
+$(function () {
+
+    $(".detail-button").on("click", function () {
+        let tResNum = $(this).data("resnum");
+
+        $.ajax({
+            url: "<%=request.getContextPath()%>/ticket/detail",
+            type: "get",
+            data: { tResNum: tResNum },
+            dataType: "json",
+            success: function (data) {
+                // 모달 데이터 채우기
+                $("#resNum").text(data.tResNum);
+                $("#ticketName").text(data.ticketName);
+                $("#useDate").text(data.useDate);
+                $("#personCnt").text(data.personCnt);
+                $("#payMethod").text(data.payMethod);
+                $("#resDate").text(data.tResDate);
+
+                $(".ticketChDiv").addClass("open");
+            },
+            error: function () {
+                alert("상세 정보를 불러오지 못했습니다.");
+            }
+        });
+    });
+
+});
+
+function closeDiv() {
+    $(".ticketChDiv").removeClass("open");
+}
+</script>
+
 </head>
 <body>
 	<div class="wrap">
@@ -362,49 +404,45 @@ visibility: visible;
 
 			<div
 				style="max-width: 1000px; margin: 80px auto; background-color: #fff8e7; padding-top: 50px; padding-bottom: 80px; border-radius: 20px;">
+				
+				<% 
+				int memberNum=(int)session.getAttribute("userId");
+				
+				MyTicketService mts=MyTicketService.getInstance();
+				
+				List<MyTicketDTO> list= mts.searchTicket(memberNum);
+				
+				request.setAttribute("ticketList", list);
+				
+				
+				%>
+				
 				<div class="ticket-container"
 					style="max-width: 1000px; margin: 0px auto;">
 					<h1 class="main-title">내 티켓 확인하기</h1>
 					<p class="subtitle">예매한 티켓의 상세 정보를 확인하고 입장하세요</p>
 
-					<div class="ticket-list">
-						<div class="ticket-card">
-							<div class="image-placeholder">
-								<span class="icon-text">🎫 티켓 이미지</span>
-							</div>
-							<div class="ticket-details">
-								<h2 class="ticket-name">V!VAPark 1일 자유이용권</h2>
-								<ul class="info-list">
-									<li><span class="icon">🗓️</span> 이용일 :&nbsp; <span><%="use_date"%></span>
-									</li>
-									<li><span class="icon">👥</span> 인원 :&nbsp; <span>성인
-											<%=1%>, 청소년 <%=2%>,어린이 <%=0%>
-									</span></li>
-									<li><span class="icon">💳</span> 결제금액 :&nbsp; <span>₩&nbsp;<%="pay_price"%></span>
-									</li>
-								</ul>
-								<button class="detail-button">상세보기</button>
-							</div>
-						</div>
 
+					<div class="ticket-list">
+					<c:forEach var="ticket" items="${ticketList}">
 						<div class="ticket-card">
 							<div class="image-placeholder">
 								<span class="icon-text">🎫 티켓 이미지</span>
 							</div>
 							<div class="ticket-details">
-								<h2 class="ticket-name">V!VAPark 연간 이용권</h2>
+								<h2 class="ticket-name">${ticket.ticketName}</h2>
 								<ul class="info-list">
-									<li><span class="icon">🗓️</span> 이용일 :&nbsp; <span><%="use_date"%></span>
+									<li><span class="icon">🗓️</span> 이용일 :&nbsp; <span>${ticket.useDate}</span>
 									</li>
-									<li><span class="icon">👥</span> 인원 :&nbsp; <span>성인
-											<%=1%>, 청소년 <%=0%>,어린이 <%=0%>
+									<li><span class="icon">👥</span> 인원 :&nbsp; <span><span>${ticket.personCnt}</span>
 									</span></li>
-									<li><span class="icon">💳</span> 결제금액 :&nbsp; <span>₩&nbsp;<%="pay_price"%></span>
+									<li><span class="icon">💳</span> 결제금액 :&nbsp; <span>₩&nbsp;<span>${ ticket.payPrice }</span></span>
 									</li>
 								</ul>
-								<button class="detail-button">상세보기</button>
+								<button class="detail-button" data-resnum="${ticket.tResNum}">상세보기</button>
 							</div>
 						</div>
+						</c:forEach>
 					</div>
 				</div>
 			</div>
@@ -424,7 +462,7 @@ visibility: visible;
 					<div class="modal-content" style="z-index: 2;">
 						<div class="detail-item">
 							<span class="icon ticket">🎟️</span>
-							<div class="detail-text">예매번호: A1234567</div>
+							<div class="detail-text">예매번호: ${ticket.tResNum}</div>
 						</div>
 						<div class="detail-item">
 							<span class="icon ticket-name">🎠</span>

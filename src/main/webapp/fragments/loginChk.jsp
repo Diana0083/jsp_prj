@@ -6,7 +6,7 @@
 //세션에 로그인 한 정보가 있는지?
 String sessionId="";
 if(new Random().nextBoolean()){
-	sessionId="seoho";
+	sessionId="min";
 }else{
 //없다면 로그인 페이지로 이동
 response.sendRedirect("http://192.168.10.78/jsp_prj/login/loginFrm.jsp");

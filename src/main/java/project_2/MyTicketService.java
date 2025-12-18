@@ -1,6 +1,7 @@
 package project_2;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyTicketService {
@@ -24,21 +25,34 @@ public class MyTicketService {
 	}//getInstance
 	
 	
-	public List<MyTicketDTO> searchTicket( int member_num ) {
-		List<MyTicketDTO> list=null;
-		
-		MyTicketDAO mtDAO = MyTicketDAO.getInstance();
-		
-		try {
-			list=mtDAO.selectTicket(member_num);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return list;
+	public List<MyTicketDTO> searchTicket(int memberNum) {
+	    List<MyTicketDTO> list = new ArrayList<>();
+
+	    MyTicketDAO mtDAO = MyTicketDAO.getInstance();
+
+	    try {
+	        list = mtDAO.selectTicket(memberNum);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
 	}//searchTicket
 	
 	
+	public int refundTicket(int tResNum) {
+	    int cnt = 0;
+	    MyTicketDAO mtDAO = MyTicketDAO.getInstance();
+
+	    try {
+	        cnt = mtDAO.refundTicket(tResNum);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return cnt;
+	}
+
 	
 	
 }//class

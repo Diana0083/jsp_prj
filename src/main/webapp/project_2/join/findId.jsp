@@ -3,77 +3,152 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="shortcut icon" href="http://192.168.10.68/html_prj/common/images/favicon.ico">
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ID 중복확인</title>
 
-<!-- 내가만든 CSS -->
-<!-- <link rel="stylesheet" type="text/css" href="http://192.168.10.68/html_prj/common/css/main_v251031.css"/> -->
-
-<!-- bootstrap CDN 시작 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<!-- bootstrap CDN 끝 -->
+<!-- bootstrap CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style type="text/css">
-#wrap{  margin: 0px auto; width: 480px; height: 380px; }	
-#container{ height: 380px; position:relative;	
-	background: #FFFFFF url(images/id_background.png) no-repeat; }	
-#searchFrm{ position: absolute; top: 180px; left: 100px }	
+body {
+	background: #FFF7F2;
+	font-family: "Noto Sans KR", sans-serif;
+}
 
-#searchResult{ position: absolute; top: 230px; left: 100px  }
+/* 팝업 전체 */
+#wrap {
+	width: 420px;
+	margin: 40px auto;
+}
 
-.fail{ color:#FF0000 }
-.success{ color:#186292 }
+/* 카드 */
+#container {
+	background: #fff;
+	border-radius: 16px;
+	padding: 30px;
+	box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* 타이틀 */
+.popup-title {
+	text-align: center;
+	font-size: 22px;
+	font-weight: 700;
+	margin-bottom: 20px;
+	color: #333;
+}
+
+/* 입력 영역 */
+#searchFrm {
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+
+#searchFrm input[type="text"] {
+	width: 220px;
+	height: 44px;
+	border-radius: 8px;
+	border: 1px solid #ccc;
+	padding: 0 12px;
+	font-size: 15px;
+	background: #FAFAFA;
+}
+
+#searchFrm input[type="text"]:focus {
+	border-color: #FF6A2B;
+	box-shadow: 0 0 0 4px rgba(255,106,43,0.18);
+	outline: none;
+	background: #fff;
+}
+
+/* 결과 영역 */
+#searchResult {
+	text-align: center;
+	font-size: 15px;
+	margin-top: 15px;
+}
+
+/* 결과 색상 */
+.fail {
+	color: #E53935;
+	font-weight: 600;
+}
+
+.success {
+	color: #FF6A2B;
+	font-weight: 700;
+}
+
+/* 사용 링크 */
+#searchResult a {
+	display: inline-block;
+	margin-left: 8px;
+	color: #FF6A2B;
+	font-weight: 600;
+	text-decoration: underline;
+	cursor: pointer;
+}
 </style>
+
 <script type="text/javascript">
 window.onload=function(){
 	document.getElementById("btnSearch").addEventListener("click",findId);
-}//onload
+}
 
 function findId(){
 	let num=parseInt(Math.random()*2);
-	
 	let id=document.popupFrm.id.value;
-	
-	let useCss='fail';
-	let resultMsg="이미 사용 중인 아이디";
-	if( num == 1 ){//사용가능한 경우
-		useCss='success';
-		resultMsg="사용 가능한 아이디";
-	}//end if
-	let msg=`[<span class='${ useCss }'>${id }</span>]는 <span class='${ useCss }'>${ resultMsg }</span> 입니다. `;
-	
-	if(useCss == 'success'){
-		msg +=`<a href='javascript:sendId("${id}")'>사용</a>`;
-	}//end if
-	
-	//처리 결과를 div에 출력
-	document.getElementById("searchResult").innerHTML=msg;
-}//findId
 
-function sendId( id ){
-	//부모창(opener )으로 값 전달
-	opener.window.document.joinFrm.id.value=id;
-	//자식창 닫기
-	self.close();
+	if(id.trim()===""){
+		alert("아이디를 입력해주세요.");
+		return;
+	}
+
+	let useCss='fail';
+	let resultMsg="이미 사용 중인 아이디입니다.";
+	if( num == 1 ){
+		useCss='success';
+		resultMsg="사용 가능한 아이디입니다.";
+	}
+
+	let msg=`[ <span class='${useCss}'>${id}</span> ] ${resultMsg}`;
+
+	if(useCss == 'success'){
+		msg +=` <a href='javascript:sendId("${id}")'>사용하기</a>`;
+	}
+
+	document.getElementById("searchResult").innerHTML=msg;
 }
 
+function sendId(id){
+	opener.window.document.joinFrm.user_id.value=id;
+	self.close();
+}
 </script>
 </head>
+
 <body>
 <div id="wrap">
 	<div id="container">
-	<div id="searchFrm">
-	<form name="popupFrm">
-		<input type="text" name="id" value="<%= request.getParameter("id") %>" style="width:200px"/>
-		<input type="button" value="중복확인" class="btn btn-success btn-sm"
-		id="btnSearch"/>
-	</form>
-	</div>
-	<%-- <div id="searchResult"><%= request.getQueryString() %></div> --%>
-	<%-- <div id="searchResult"><%= request.getParameter("id") %></div> --%>
-	<div id="searchResult"></div>
+
+		<div class="popup-title">아이디 중복확인</div>
+
+		<div id="searchFrm">
+			<form name="popupFrm" class="d-flex gap-2">
+				<input type="text" name="id"
+					value="<%= request.getParameter("id") %>"
+					placeholder="아이디 입력">
+				<button type="button" id="btnSearch"
+					class="btn btn-warning text-white">
+					확인
+				</button>
+			</form>
+		</div>
+
+		<div id="searchResult"></div>
+
 	</div>
 </div>
 </body>
