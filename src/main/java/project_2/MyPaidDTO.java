@@ -29,32 +29,64 @@ public class MyPaidDTO {
 		return ticketName;
 	}
 
+	public void setTicketName(String ticketName) {
+		this.ticketName = ticketName;
+	}
+
 	public int getPersonalCnt() {
 		return personalCnt;
+	}
+
+	public void setPersonalCnt(int personalCnt) {
+		this.personalCnt = personalCnt;
 	}
 
 	public int getPayPrice() {
 		return payPrice;
 	}
 
+	public void setPayPrice(int payPrice) {
+		this.payPrice = payPrice;
+	}
+
 	public int gettResNum() {
 		return tResNum;
+	}
+
+	public void settResNum(int tResNum) {
+		this.tResNum = tResNum;
 	}
 
 	public int getTicketNum() {
 		return ticketNum;
 	}
 
+	public void setTicketNum(int ticketNum) {
+		this.ticketNum = ticketNum;
+	}
+
 	public int getProNum() {
 		return proNum;
+	}
+
+	public void setProNum(int proNum) {
+		this.proNum = proNum;
 	}
 
 	public Date getPayDate() {
 		return payDate;
 	}
 
+	public void setPayDate(Date payDate) {
+		this.payDate = payDate;
+	}
+
 	public Date gettResDate() {
 		return tResDate;
+	}
+
+	public void settResDate(Date tResDate) {
+		this.tResDate = tResDate;
 	}
 
 	@Override
@@ -63,6 +95,7 @@ public class MyPaidDTO {
 				+ ", tResNum=" + tResNum + ", ticketNum=" + ticketNum + ", proNum=" + proNum + ", payDate=" + payDate
 				+ ", tResDate=" + tResDate + "]";
 	}
+
 	
 	
 	

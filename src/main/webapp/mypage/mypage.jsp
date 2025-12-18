@@ -5,7 +5,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@ include file="../fragments/siteProperty.jsp" %>  
 <%@ include file="../fragments/loginChk2.jsp" %>  
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto">
 <head>
@@ -16,13 +15,13 @@
 <title>마이페이지</title>
 <link rel="shortcut icon" href="http://192.168.10.68/jsp_prj/common/images/favicon.ico">
 
-<script src="http://192.168.10.68/jsp_prj/common/js/color-modes.js"></script>
+<script src="http://192.168.10.78/jsp_prj/common/js/color-modes.js"></script>
 <!-- bootstrap CDN 시작 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
 <meta name="theme-color" content="#712cf9">
-<link href="http://192.168.10.68/jsp_prj/common/css/carousel.css" rel="stylesheet">
+<link href="http://192.168.10.78/jsp_prj/common/css/carousel.css" rel="stylesheet">
 <jsp:include page="../fragments/bootstrap_css.jsp"/>
 <style type="text/css">
 #wrap{  margin: 0px auto; width: 1200px; height: 1000px; }	
